@@ -1,3 +1,4 @@
+import 'package:bytebankapp/database/database.dart';
 import 'package:bytebankapp/models/contatos.dart';
 import 'package:flutter/material.dart';
 
@@ -69,8 +70,14 @@ class _ContactsFormState extends State<ContactsForm> {
                         : 0;
                     // agora sim executar o processamento
                     final Contato novoContato = Contato(0, _nome, _conta);
+                    // Gravando no banco no modo antigo
+                    save(novoContato).then((id) {
+                      Navigator.pop(
+                        context,
+                      );
+                    });
                     // e navegamos para fora
-                    Navigator.pop(context, novoContato);
+                    //Navigator.pop(context, novoContato);
                   },
                   child: const Text('Cadastrar'),
                 ),

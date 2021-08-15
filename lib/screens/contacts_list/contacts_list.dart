@@ -3,7 +3,12 @@ import 'package:bytebankapp/models/contatos.dart';
 import 'package:bytebankapp/screens/forms/contact_form.dart';
 import 'package:flutter/material.dart';
 
-class ContactsList extends StatelessWidget {
+class ContactsList extends StatefulWidget {
+  @override
+  _ContactsListState createState() => _ContactsListState();
+}
+
+class _ContactsListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
     // container da Estrutura da Página
@@ -17,34 +22,47 @@ class ContactsList extends StatelessWidget {
       body: FutureBuilder<List<Contato>>(
         // A criação de listas tem que ser determinada como vazia agora.
         initialData: List.empty(),
-        future: Future.delayed(Duration(seconds: 2)).then((value) => findAll()),
+        future: findAll(),
         builder: (context, snapshot) {
-          // Verificar se a variável está ok antes do carregamento
-          if (snapshot.data != null) {
-            final List<Contato>? contacts = snapshot.data as List<Contato>;
-            // Verificação obrigatória dos nulos
-            if (contacts != null) {
-              //feito if para validar nulo
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final Contato contact = contacts[index];
-                  return _ContactItem(contact);
-                },
-                itemCount: contacts.length,
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              // TODO: Cenario em que o Future não foi executado (Pode ser um botão de Refresh)
+              break;
+            case ConnectionState.waiting:
+              // Apresenta o Loading na tela
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Text("Carregando"),
+                  ],
+                ),
               );
-            }
+              break;
+            case ConnectionState.active:
+              // Status durante o processamento.
+              break;
+            case ConnectionState.done:
+              // Verificar se a variável está ok antes do carregamento
+              if (snapshot.data != null) {
+                final List<Contato>? contacts = snapshot.data as List<Contato>;
+                // Verificação obrigatória dos nulos
+                if (contacts != null) {
+                  //feito if para validar nulo
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      final Contato contact = contacts[index];
+                      return _ContactItem(contact);
+                    },
+                    itemCount: contacts.length,
+                  );
+                }
+              }
+              break;
           }
-          // Apresenta o Loading na tela
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-                Text("Carregando"),
-              ],
-            ),
-          );
+          return Text('Erro desconhecido');
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -56,9 +74,11 @@ class ContactsList extends StatelessWidget {
                 return ContactsForm();
               },
             ),
-          ).then((newContact) => debugPrint(
-                newContact.toString(),
-              ));
+          ).then(
+            (id) {
+              setState(() {});
+            },
+          );
         },
         child: Icon(Icons.add),
       ),

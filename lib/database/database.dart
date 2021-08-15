@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future<Database> getDatabase() async {
-  final String path = join(await getDatabasesPath(), 'byteBank02.db');
+  final String path = join(await getDatabasesPath(), 'byteBank01.db');
   //byteBank.db é o nome do arquivo que representará o banco de dados
   return openDatabase(path, onCreate: (db, version) {
     db.execute('CREATE TABLE contacts('
