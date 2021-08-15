@@ -1,4 +1,4 @@
-import 'package:bytebankapp/database/database.dart';
+import 'package:bytebankapp/database/dao/contatos_dao.dart';
 import 'package:bytebankapp/models/contatos.dart';
 import 'package:bytebankapp/screens/forms/contact_form.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,8 @@ class ContactsList extends StatefulWidget {
 }
 
 class _ContactsListState extends State<ContactsList> {
+  ContatoDAO _contatoDAO = ContatoDAO();
+
   @override
   Widget build(BuildContext context) {
     // container da Estrutura da Página
@@ -22,7 +24,7 @@ class _ContactsListState extends State<ContactsList> {
       body: FutureBuilder<List<Contato>>(
         // A criação de listas tem que ser determinada como vazia agora.
         initialData: List.empty(),
-        future: findAll(),
+        future: _contatoDAO.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:

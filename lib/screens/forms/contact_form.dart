@@ -1,3 +1,4 @@
+import 'package:bytebankapp/database/dao/contatos_dao.dart';
 import 'package:bytebankapp/database/database.dart';
 import 'package:bytebankapp/models/contatos.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,8 @@ class ContactsForm extends StatefulWidget {
 
 class _ContactsFormState extends State<ContactsForm> {
   final TextEditingController _nameEditingController = TextEditingController();
-
   final TextEditingController _contaEditingController = TextEditingController();
+  final ContatoDAO _contatoDAO = ContatoDAO();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +72,7 @@ class _ContactsFormState extends State<ContactsForm> {
                     // agora sim executar o processamento
                     final Contato novoContato = Contato(0, _nome, _conta);
                     // Gravando no banco no modo antigo
-                    save(novoContato).then((id) {
+                    _contatoDAO.save(novoContato).then((id) {
                       Navigator.pop(
                         context,
                       );
