@@ -14,7 +14,9 @@ class ContactsList extends StatelessWidget {
         title: Text('Contatos'),
       ),
       // Contrução dinãmica da lista com base em Banco
-      body: FutureBuilder(
+      body: FutureBuilder<List<Contato>>(
+        // A criação de listas tem que ser determinada como vazia agora.
+        initialData: List.empty(),
         future: Future.delayed(Duration(seconds: 2)).then((value) => findAll()),
         builder: (context, snapshot) {
           // Verificar se a variável está ok antes do carregamento
@@ -32,7 +34,17 @@ class ContactsList extends StatelessWidget {
               );
             }
           }
-          return CircularProgressIndicator();
+          // Apresenta o Loading na tela
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                Text("Carregando"),
+              ],
+            ),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
