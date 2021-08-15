@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MyApp());
-  save(Contato(0, 'alex', 1000)).then((id) {
-    findAll().then((contacts) => debugPrint(contacts.toString()));
-  });
+  save(Contato(2, 'alex', 2000));
 }
 
 class MyApp extends StatelessWidget {

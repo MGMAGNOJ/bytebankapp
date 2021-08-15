@@ -1,13 +1,11 @@
+import 'package:bytebankapp/database/database.dart';
 import 'package:bytebankapp/models/contatos.dart';
 import 'package:bytebankapp/screens/forms/contact_form.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
-  final List<Contato> contatos = [];
-
   @override
   Widget build(BuildContext context) {
-    contatos.add(Contato(1, 'Alex', 1));
     // container da Estrutura da Página
     return Scaffold(
       // Adiciona a barra de título da Página
@@ -15,12 +13,27 @@ class ContactsList extends StatelessWidget {
         // Titulo do AppBar
         title: Text('Contatos'),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          final Contato contato = contatos[index];
-          return _ContactItem(contato);
+      // Contrução dinãmica da lista com base em Banco
+      body: FutureBuilder(
+        future: Future.delayed(Duration(seconds: 2)).then((value) => findAll()),
+        builder: (context, snapshot) {
+          // Verificar se a variável está ok antes do carregamento
+          if (snapshot.data != null) {
+            final List<Contato>? contacts = snapshot.data as List<Contato>;
+            // Verificação obrigatória dos nulos
+            if (contacts != null) {
+              //feito if para validar nulo
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  final Contato contact = contacts[index];
+                  return _ContactItem(contact);
+                },
+                itemCount: contacts.length,
+              );
+            }
+          }
+          return CircularProgressIndicator();
         },
-        itemCount: contatos.length,
       ),
       floatingActionButton: FloatingActionButton(
         //Codigo do floating Button Cuidar com os ( e {
