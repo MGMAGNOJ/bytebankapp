@@ -1,13 +1,11 @@
-import 'package:bytebankapp/models/contatos.dart';
 import 'package:bytebankapp/screens/forms/contact_form.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
-  final List<Contato> contatos = [];
+  const ContactsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    contatos.add(Contato(1, 'Alex', 1));
     // container da Estrutura da Página
     return Scaffold(
       // Adiciona a barra de título da Página
@@ -15,12 +13,27 @@ class ContactsList extends StatelessWidget {
         // Titulo do AppBar
         title: Text('Contatos'),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          final Contato contato = contatos[index];
-          return _ContactItem(contato);
-        },
-        itemCount: contatos.length,
+      // Corpo da Página de listagens é um Listview
+      // Listview tem childrem
+      // Dentro do Childrem colocamos um card para conteúdo
+      // Card tem Child
+      // dentro do Child colocamos o ListTile com as linhas
+      body: ListView(
+        children: <Widget>[
+          Card(
+            child: ListTile(
+              // aqui usamos strings de teste.
+              title: Text(
+                'Magno',
+                style: TextStyle(fontSize: 24.0),
+              ),
+              subtitle: Text(
+                '47 996119391',
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         //Codigo do floating Button Cuidar com os ( e {
@@ -36,28 +49,6 @@ class ContactsList extends StatelessWidget {
               ));
         },
         child: Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class _ContactItem extends StatelessWidget {
-  final Contato contato;
-
-  _ContactItem(this.contato);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(
-          contato.nome,
-          style: TextStyle(fontSize: 24.0),
-        ),
-        subtitle: Text(
-          contato.numeroDaConta.toString(),
-          style: TextStyle(fontSize: 16.0),
-        ),
       ),
     );
   }

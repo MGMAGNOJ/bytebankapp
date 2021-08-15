@@ -1,16 +1,16 @@
 import 'package:bytebankapp/models/contatos.dart';
 import 'package:flutter/material.dart';
 
-class contactsForm extends StatefulWidget {
-  const contactsForm({Key? key}) : super(key: key);
+class ContactsForm extends StatefulWidget {
+  const ContactsForm({Key? key}) : super(key: key);
 
   @override
-  _contactsFormState createState() {
-    return _contactsFormState();
+  _ContactsFormState createState() {
+    return _ContactsFormState();
   }
 }
 
-class _contactsFormState extends State<contactsForm> {
+class _ContactsFormState extends State<ContactsForm> {
   final TextEditingController _nameEditingController = TextEditingController();
 
   final TextEditingController _contaEditingController = TextEditingController();
@@ -68,7 +68,7 @@ class _contactsFormState extends State<contactsForm> {
                         ? int.parse(_conta_text)
                         : 0;
                     // agora sim executar o processamento
-                    final Contato novoContato = Contato(_nome, _conta);
+                    final Contato novoContato = Contato(0, _nome, _conta);
                     // e navegamos para fora
                     Navigator.pop(context, novoContato);
                   },
